@@ -6,9 +6,12 @@
 
 var throttle = require('../')({
   interval: 500,
+  warnInterval: 5000,
   maxCalls: 2,
   onAccept: function() { accepted++; },
-  onReject: function() { rejected++; }
+  onReject: function() { rejected++; },
+  onWarn:   function(rejectedCount) { console.log('onWarn(): rejectedCount: '+rejectedCount); },
+  //onStats:   function(acceptCount, rejectedCount) { console.log('onStats(): '+acceptCount+', rejectedCount: '+rejectedCount); },
 });
 
 
