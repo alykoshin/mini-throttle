@@ -4,11 +4,17 @@
 
 'use strict';
 
-var throttle = require('../')({ interval: 500, maxCalls: 2 });
+var throttle = require('../')({
+  interval: 500,
+  maxCalls: 2,
+  onAccept: function() { accepted++; },
+  onReject: function() { rejected++; }
+});
 
 
 var startTime = new Date(); // remember start time
 var count = 0;
+var accepted = 0, rejected = 0;
 
 
 // Test function to be called through throttling function
@@ -27,7 +33,11 @@ var delayedTest = function() {
       var now = new Date();
       console.log('' + prefix(count) + timeDiff(now, startTime) + '  |');
       throttle(fn, count, now);
-      if (++count >10) { return; }
+      count++;
+      if (count >= 10) {
+        console.log('Accepted: '+ accepted+', rejected: '+rejected+' calls.');
+        return;
+      }
       delayedTest();
     },
 
